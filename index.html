@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>EEMTI Dragão do Mar - Atividades</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg-gradient-start: #004aad;
+  --bg-gradient-end: #007bff;
+  --primary: #004aad;
+  --danger: #dc3545;
+  --card-bg: #ffffff;
+  --card-soft: #f5f5f5;
+  --text-main: #222222;
+  --text-muted: #666666;
+  --border-soft: #dddddd;
+  --shadow-strong: 0 10px 25px rgba(0,0,0,0.25);
+  --shadow-soft: 0 4px 10px rgba(0,0,0,0.08);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  margin: 0;
+  padding: 16px 8px;
+  color: var(--text-main);
+}
+
+/* CONTAINER PRINCIPAL */
+.container {
+  background: var(--card-bg);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 18px 18px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-strong);
+}
+
+/* TOPO / LOGO */
+.logo {
+  width: 80px;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+/* TOGGLE COORD. SIMPLIFICADO: [ ] Coord. */
+.coord-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.coord-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;          /* espaço entre o check e o texto */
+  cursor: pointer;
+}
+
+.coord-toggle input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.05);
+}
+
+/* TEXTOS */
+.info {
+  font-size: 0.78rem;
+  text-align: center;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+/* ALERTA LOGIN */
+.alerta {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* FORMULÁRIOS */
+input, select, textarea {
+  width: 100%;
+  padding: 9px 10px;
+  margin-top: 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid #cccccc;
+  font-size: 0.85rem;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #aaaaaa;
+  font-size: 0.8rem;
+}
+
+textarea {
+  height: 90px;
+  resize: vertical;
+}
+
+/* FILE INPUT */
+input[type="file"] {
+  padding: 6px 4px;
+  font-size: 0.78rem;
+}
+
+/* BOTÕES */
+button {
+  width: 100%;
+  padding: 11px;
+  margin-top: 10px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.logout {
+  background: var(--danger);
+}
+
+/* AVISO PDFs */
+.pdf-hint {
+  color: #c53030;
+  font-size: 0.72rem;
+  margin-top: 8px;
+}
+
+/* CARDS LISTAGEM */
+.card {
+  background: var(--card-soft);
+  padding: 10px 10px 8px;
+  margin-top: 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-soft);
+  font-size: 0.8rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+}
+
+.card-header span {
+  white-space: nowrap;
+}
+
+.card small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.card p {
+  margin: 6px 0;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.card a {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.card button {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  padding: 7px;
+}
+
+/* TÍTULOS INTERNOS */
+h3 {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  text-align: left;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 14px;
+  border-top: 1px solid #e3e3e3;
+  padding-top: 8px;
+}
+
+/* VISIBILIDADE */
+.hidden {
+  display: none;
+}
+
+/* RESPONSIVIDADE PEQUENOS APARELHOS */
+@media (max-width: 360px) {
+  .container {
+    padding: 16px 12px 14px;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+
+  .alerta {
+    font-size: 0.75rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <img src="imagem1.png" class="logo" alt="Logo EEMTI Dragão do Mar">
+
+  <h2>EEMTI DRAGÃO DO MAR</h2>
+  <div class="subtitle">Canal de envio de atividades</div>
+
+  <!-- TOGGLE COORD. SIMPLIFICADO: [ ] Coord. -->
+  <div class="coord-toggle">
+    <label>
+      <input type="checkbox" id="tipo">
+      <span>Coord.</span>
+    </label>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="loginDiv">
+
+    <div class="alerta">
+      ⚠️ Utilize o mesmo usuário e senha do sistema de reserva de equipamentos.
+    </div>
+
+    <p class="info">
+      Em caso de impossibilidade de ministrar a aula (doença, imprevistos ou urgências),
+      utilize este sistema para enviar uma atividade para sua turma.
+    </p>
+
+    <input type="email" id="email" placeholder="Usuário (e-mail institucional)">
+    <input type="password" id="senha" placeholder="Senha">
+
+    <button onclick="login()">Entrar</button>
+
+    <div class="footer">
+      🎓 EEMTI DRAGÃO DO MAR 🖥️ L.E.I. ⚙️ By D.S.Montenegro
+    </div>
+  </div>
+
+  <!-- PROFESSOR -->
+  <div id="profDiv" class="hidden">
+
+    <h3>Enviar atividade</h3>
+
+    <select id="turma">
+      <optgroup label="Integral">
+        <option>1A</option><option>1B</option><option>1C</option>
+        <option>2A</option><option>2B</option><option>2C</option>
+        <option>3A</option><option>3B</option>
+      </optgroup>
+      <optgroup label="Noite">
+        <option>1D</option><option>2D</option><option>3C</option>
+      </optgroup>
+    </select>
+
+    <select id="disciplina">
+      <option value="">Selecione a disciplina</option>
+      <option>Matemática</option>
+      <option>Português</option>
+      <option>História</option>
+      <option>Geografia</option>
+      <option>Física</option>
+      <option>Química</option>
+      <option>Biologia</option>
+      <option>Inglês</option>
+      <option>Educação Física</option>
+      <option>Filosofia</option>
+      <option>Sociologia</option>
+    </select>
+
+    <textarea id="instrucao" placeholder="Descreva claramente a atividade que deverá ser realizada pela turma."></textarea>
+
+    <p class="pdf-hint">
+      ⚠️ Até 3 PDFs (máx. 5MB cada). Apenas arquivos .pdf serão enviados.
+    </p>
+
+    <input type="file" id="arquivos" multiple>
+
+    <button onclick="enviar()">Enviar atividade</button>
+    <button class="logout" onclick="logout()">Sair</button>
+
+    <hr style="margin:14px 0; border:0; border-top:1px solid #e3e3e3;">
+
+    <h3>Minhas atividades</h3>
+    <div id="listaProfessor"></div>
+
+    <div class="footer">
+      🎓 EEMTI DRAGÃO DO MAR 🖥️ L.E.I. ⚙️ By D.S.Montenegro
+    </div>
+
+  </div>
+
+  <!-- COORDENAÇÃO -->
+  <div id="coordDiv" class="hidden">
+
+    <h3>Painel da Coordenação</h3>
+
+    <div id="listaCoord"></div>
+
+    <button class="logout" onclick="logout()">Sair</button>
+
+    <div class="footer">
+      🎓 EEMTI DRAGÃO DO MAR 🖥️ L.E.I. ⚙️ By D.S.Montenegro
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseUrl = "https://bdjqajzhlkdfagdfknmh.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkanFhanpobGtkZmFnZGZrbm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA5MDcsImV4cCI6MjA4NjMyNjkwN30.hxh4adeSNM7FazeNkinwPrJEZdxsZkhtPTB5zU6eub0";
+
+const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+let userEmail = "";
+
+function limparTexto(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]/g, "_");
+}
+
+// LOGIN
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value;
+  const isCoord = document.getElementById("tipo").checked;
+
+  if (!email || !senha) {
+    alert("Informe usuário e senha.");
+    return;
+  }
+
+  const { error } = await db.auth.signInWithPassword({ email, password: senha });
+
+  if (error) {
+    alert("Erro no login: " + error.message);
+    return;
+  }
+
+  userEmail = email;
+
+  document.getElementById("loginDiv").classList.add("hidden");
+
+  if (isCoord) {
+    document.getElementById("coordDiv").classList.remove("hidden");
+    carregarCoord();
+  } else {
+    document.getElementById("profDiv").classList.remove("hidden");
+    carregarProfessor();
+  }
+}
+
+// LOGOUT
+async function logout() {
+  await db.auth.signOut();
+  location.reload();
+}
+
+// ENVIO
+async function enviar() {
+  const files = document.getElementById("arquivos").files;
+  const turma = document.getElementById("turma").value;
+  const disciplina = document.getElementById("disciplina").value;
+  const instrucao = document.getElementById("instrucao").value.trim();
+
+  if (!disciplina) {
+    alert("Selecione a disciplina.");
+    return;
+  }
+  if (!instrucao) {
+    alert("Digite as instruções da atividade.");
+    return;
+  }
+  if (files.length === 0) {
+    alert("Selecione ao menos 1 PDF.");
+    return;
+  }
+
+  let nomes = [];
+
+  for (let file of files) {
+    if (!file.name.toLowerCase().endsWith(".pdf")) continue;
+    if (file.size > 5 * 1024 * 1024) continue;
+
+    let nome = `${limparTexto(turma)}_${limparTexto(disciplina)}_${Date.now()}_${Math.random().toString(36).substring(2)}.pdf`;
+
+    let { error } = await db.storage.from("atividades").upload(nome, file);
+
+    if (!error) {
+      nomes.push(nome);
+    } else {
+      alert("Erro ao enviar arquivo: " + error.message);
+    }
+  }
+
+  if (nomes.length === 0) {
+    alert("Nenhum arquivo válido enviado.");
+    return;
+  }
+
+  await db.from("registros").insert([{
+    professor: userEmail,
+    turma,
+    disciplina,
+    instrucoes: instrucao,
+    arquivos: nomes
+  }]);
+
+  alert("Atividade enviada com sucesso!");
+
+  document.getElementById("instrucao").value = "";
+  document.getElementById("arquivos").value = "";
+
+  carregarProfessor();
+}
+
+// PROFESSOR
+async function carregarProfessor() {
+  const { data, error } = await db
+    .from("registros")
+    .select("*")
+    .eq("professor", userEmail)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    alert("Erro ao carregar atividades: " + error.message);
+    return;
+  }
+
+  let html = "";
+
+  (data || []).forEach(item => {
+    let dataFormatada = new Date(item.created_at).toLocaleString("pt-BR");
+
+    html += `<div class="card">
+      <div class="card-header">
+        <span>${item.turma}</span>
+        <span>${item.disciplina || "Sem disciplina"}</span>
+      </div>
+      <small>${dataFormatada}</small>
+      <p>${item.instrucoes}</p>`;
+
+    (item.arquivos || []).forEach(a => {
+      const url = db.storage.from("atividades").getPublicUrl(a).data.publicUrl;
+      html += `<a href="${url}" target="_blank">📥 PDF</a><br>`;
+    });
+
+    html += `<button onclick='excluir(${item.id}, ${JSON.stringify(item.arquivos || [])})'>🗑️ Excluir</button></div>`;
+  });
+
+  document.getElementById("listaProfessor").innerHTML =
+    html || "<p class='info'>Nenhuma atividade enviada ainda.</p>";
+}
+
+// COORDENAÇÃO
+async function carregarCoord() {
+  const { data, error } = await db
+    .from("registros")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    alert("Erro ao carregar atividades: " + error.message);
+    return;
+  }
+
+  let html = "";
+
+  (data || []).forEach(item => {
+    let dataFormatada = new Date(item.created_at).toLocaleString("pt-BR");
+
+    html += `<div class="card">
+      <div class="card-header">
+        <span>${item.turma}</span>
+        <span>${item.disciplina || "Sem disciplina"}</span>
+      </div>
+      <small>${item.professor}</small>
+      <small>${dataFormatada}</small>
+      <p>${item.instrucoes}</p>`;
+
+    (item.arquivos || []).forEach(a => {
+      const url = db.storage.from("atividades").getPublicUrl(a).data.publicUrl;
+      html += `<a href="${url}" target="_blank">📥 PDF</a><br>`;
+    });
+
+    html += `<button onclick='excluir(${item.id}, ${JSON.stringify(item.arquivos || [])})'>🗑️ Excluir</button></div>`;
+  });
+
+  document.getElementById("listaCoord").innerHTML =
+    html || "<p class='info'>Nenhuma atividade enviada ainda.</p>";
+}
+
+// EXCLUIR
+async function excluir(id, arquivos) {
+  if (!confirm("Deseja excluir esta atividade?")) return;
+
+  for (let a of arquivos) {
+    await db.storage.from("atividades").remove([a]);
+  }
+
+  await db.from("registros").delete().eq("id", id);
+
+  alert("Atividade excluída!");
+
+  carregarProfessor();
+  carregarCoord();
+}
+</script>
+
+</body>
+</html>
