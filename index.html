@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>EEMTI Dragão do Mar</title>
+
+<style>
+body {
+  font-family: 'Segoe UI';
+  background: linear-gradient(135deg, #004aad, #007bff);
+  margin: 0;
+}
+
+.container {
+  background: white;
+  max-width: 420px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.logo {
+  width: 90px;
+  display:block;
+  margin:auto;
+}
+
+h2 { text-align:center; }
+
+.info {
+  font-size:13px;
+  text-align:center;
+  color:#444;
+}
+
+.alerta {
+  background:#fff3cd;
+  color:#856404;
+  padding:10px;
+  border-radius:8px;
+  font-size:13px;
+  margin-bottom:10px;
+  text-align:center;
+  font-weight:500;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+textarea { height: 90px; }
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #004aad;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logout { background: #dc3545; }
+
+.hidden { display:none; }
+
+.card {
+  background: #f1f1f1;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="imagem1.png" class="logo">
+
+<h2>EEMTI DRAGÃO DO MAR</h2>
+
+<!-- LOGIN -->
+<div id="loginDiv">
+
+  <div class="alerta">
+    ⚠️ Utilize o mesmo usuário e senha do sistema de reserva de equipamentos.
+  </div>
+
+  <p class="info">
+    Em caso de impossibilidade de ministrar a aula, utilize este sistema
+    para enviar atividades para sua turma.
+  </p>
+
+  <input type="email" id="email" placeholder="Usuário">
+  <input type="password" id="senha" placeholder="Senha">
+
+  <div style="text-align:center;margin-top:10px;">
+    <input type="checkbox" id="tipo">
+    <label><b>Coordenação</b></label>
+  </div>
+
+  <button onclick="login()">Entrar</button>
+
+  <div class="footer">
+    🎓 EEMTI DRAGÃO DO MAR 🖥️ L.E.I. ⚙️ By D.S.Montenegro
+  </div>
+</div>
+
+<!-- PROFESSOR -->
+<div id="profDiv" class="hidden">
+
+  <h3>Enviar Atividade</h3>
+
+  <select id="turma">
+    <optgroup label="Integral">
+      <option>1A</option><option>1B</option><option>1C</option>
+      <option>2A</option><option>2B</option><option>2C</option>
+      <option>3A</option><option>3B</option>
+    </optgroup>
+    <optgroup label="Noite">
+      <option>1D</option><option>2D</option><option>3C</option>
+    </optgroup>
+  </select>
+
+  <select id="disciplina">
+    <option value="">Selecione a disciplina</option>
+    <option>Matemática</option>
+    <option>Português</option>
+    <option>História</option>
+    <option>Geografia</option>
+    <option>Física</option>
+    <option>Química</option>
+    <option>Biologia</option>
+    <option>Inglês</option>
+    <option>Educação Física</option>
+    <option>Filosofia</option>
+    <option>Sociologia</option>
+  </select>
+
+  <textarea id="instrucao" placeholder="Digite as instruções..."></textarea>
+
+  <p style="color:red;font-size:12px;">
+    ⚠️ Até 3 PDFs (máx. 5MB cada)
+  </p>
+
+  <input type="file" id="arquivos" multiple>
+
+  <button onclick="enviar()">Enviar</button>
+  <button class="logout" onclick="logout()">Sair</button>
+
+  <hr>
+  <h3>Minhas atividades</h3>
+  <div id="listaProfessor"></div>
+
+  <div class="footer">
+    🎓 EEMTI DRAGÃO DO MAR 🖥️ L.E.I. ⚙️ By D.S.Montenegro
+  </div>
+
+</div>
+
+<!-- COORDENAÇÃO -->
+<div id="coordDiv" class="hidden">
+
+  <h3>Painel da Coordenação</h3>
+
+  <div id="listaCoord"></div>
+
+  <button class="logout" onclick="logout()">Sair</button>
+
+  <div class="footer">
+    🎓 EEMTI DRAGÃO DO MAR 🖥️ L.E.I. ⚙️ By D.S.Montenegro
+  </div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const supabaseUrl = "https://bdjqajzhlkdfagdfknmh.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJkanFhanpobGtkZmFnZGZrbm1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA5MDcsImV4cCI6MjA4NjMyNjkwN30.hxh4adeSNM7FazeNkinwPrJEZdxsZkhtPTB5zU6eub0";
+
+const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+let userEmail = "";
+
+function limparTexto(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]/g, "_");
+}
+
+// LOGIN
+async function login() {
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  const isCoord = document.getElementById("tipo").checked;
+
+  const { error } = await db.auth.signInWithPassword({ email, password: senha });
+
+  if (error) return alert("Erro no login: " + error.message);
+
+  userEmail = email;
+
+  loginDiv.classList.add("hidden");
+
+  if (isCoord) {
+    coordDiv.classList.remove("hidden");
+    carregarCoord();
+  } else {
+    profDiv.classList.remove("hidden");
+    carregarProfessor();
+  }
+}
+
+// LOGOUT
+async function logout() {
+  await db.auth.signOut();
+  location.reload();
+}
+
+// ENVIO
+async function enviar() {
+  const files = document.getElementById("arquivos").files;
+  const turma = document.getElementById("turma").value;
+  const disciplina = document.getElementById("disciplina").value;
+  const instrucao = document.getElementById("instrucao").value;
+
+  if (!disciplina) return alert("Selecione a disciplina");
+  if (!instrucao) return alert("Digite as instruções");
+  if (files.length === 0) return alert("Selecione ao menos 1 PDF");
+
+  let nomes = [];
+
+  for (let file of files) {
+    if (!file.name.toLowerCase().endsWith(".pdf")) continue;
+    if (file.size > 5 * 1024 * 1024) continue;
+
+    let nome = `${limparTexto(turma)}_${limparTexto(disciplina)}_${Date.now()}_${Math.random().toString(36).substring(2)}.pdf`;
+
+    let { error } = await db.storage.from("atividades").upload(nome, file);
+
+    if (!error) nomes.push(nome);
+    else alert(error.message);
+  }
+
+  if (nomes.length === 0) return alert("Nenhum arquivo válido enviado");
+
+  await db.from("registros").insert([{
+    professor: userEmail,
+    turma,
+    disciplina,
+    instrucoes: instrucao,
+    arquivos: nomes
+  }]);
+
+  alert("Enviado com sucesso!");
+
+  carregarProfessor();
+}
+
+// PROFESSOR
+async function carregarProfessor() {
+  const { data } = await db.from("registros")
+    .select("*")
+    .eq("professor", userEmail)
+    .order("created_at", { ascending: false });
+
+  let html = "";
+
+  data.forEach(item => {
+    let dataFormatada = new Date(item.created_at).toLocaleString("pt-BR");
+
+    html += `<div class="card">
+      <b>${item.turma} - ${item.disciplina || "Sem disciplina"}</b><br>
+      <small>${dataFormatada}</small>
+      <p>${item.instrucoes}</p>`;
+
+    item.arquivos.forEach(a => {
+      const url = db.storage.from("atividades").getPublicUrl(a).data.publicUrl;
+      html += `<a href="${url}" target="_blank">📥 PDF</a><br>`;
+    });
+
+    html += `<button onclick='excluir(${item.id}, ${JSON.stringify(item.arquivos)})'>🗑️ Excluir</button></div>`;
+  });
+
+  document.getElementById("listaProfessor").innerHTML = html;
+}
+
+// COORDENAÇÃO
+async function carregarCoord() {
+  const { data } = await db.from("registros")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  let html = "";
+
+  data.forEach(item => {
+    let dataFormatada = new Date(item.created_at).toLocaleString("pt-BR");
+
+    html += `<div class="card">
+      <b>${item.turma} - ${item.disciplina || "Sem disciplina"}</b><br>
+      <small>${item.professor}</small><br>
+      <small>${dataFormatada}</small>
+      <p>${item.instrucoes}</p>`;
+
+    item.arquivos.forEach(a => {
+      const url = db.storage.from("atividades").getPublicUrl(a).data.publicUrl;
+      html += `<a href="${url}" target="_blank">📥 PDF</a><br>`;
+    });
+
+    html += `<button onclick='excluir(${item.id}, ${JSON.stringify(item.arquivos)})'>🗑️ Excluir</button></div>`;
+  });
+
+  document.getElementById("listaCoord").innerHTML = html;
+}
+
+// EXCLUIR
+async function excluir(id, arquivos) {
+  if (!confirm("Deseja excluir?")) return;
+
+  for (let a of arquivos) {
+    await db.storage.from("atividades").remove([a]);
+  }
+
+  await db.from("registros").delete().eq("id", id);
+
+  alert("Excluído!");
+
+  carregarProfessor();
+  carregarCoord();
+}
+</script>
+
+</body>
+</html>
